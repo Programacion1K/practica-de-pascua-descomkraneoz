@@ -2,12 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ListaGUI {
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        Utilizable lista=new ListaPalabras();
+        Utilizable lista = new ListaVehiculos();
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         JFrame frame=new JFrame();
         JPanel ventana=new JPanel();
@@ -17,7 +18,15 @@ public class ListaGUI {
         Map<JButton, ActionListener> botones=new HashMap<>();
         botones.put(new JButton("Mostrar"), e -> JOptionPane.showMessageDialog(null,lista.muestraTodos()));
         botones.put(new JButton("Añadir"),e->lista.pideYAnyade());
-        botones.put(new JButton("Leer de Fichero"),e->leer(lista));
+        botones.put(new JButton("Leer de Fichero"), e -> {
+            try {
+                leer(lista);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
         botones.put(new JButton("Escribir en Fichero"),e->escribir(lista));
         for(Map.Entry<JButton,ActionListener> boton:
             botones.entrySet()){
@@ -37,7 +46,7 @@ public class ListaGUI {
         lista.guardaEnFichero(pedirFichero.getSelectedFile());
     }
 
-    private static void leer(Utilizable lista) {
+    private static void leer(Utilizable lista) throws IOException, ClassNotFoundException {
         JFileChooser pedirFichero=new JFileChooser();
         pedirFichero.showOpenDialog(null);
         lista.leeDeFichero(pedirFichero.getSelectedFile());
