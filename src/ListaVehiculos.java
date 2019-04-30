@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListaVehiculos implements Utilizable {
-    Set<Vehiculo> lista = new HashSet<>();
+    List<Vehiculo> lista = new ArrayList<>();
 
     @Override
     public String muestraTodos() {
@@ -13,13 +13,22 @@ public class ListaVehiculos implements Utilizable {
     }
 
     @Override
-    public void leeDeFichero(File nombreFichero) {
-        /*try {
-            lista= Files.readAllLines(nombreFichero.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+    public void leeDeFichero(File nombreFichero) throws ClassNotFoundException, IOException {
+        ObjectInputStream ois = null;
+        try {
+            FileInputStream fis = new FileInputStream(nombreFichero);
+            ois = new ObjectInputStream(fis);
+            while (true) {
+                Vehiculo v = (Vehiculo) ois.readObject();
+                System.out.println("Nombre del vehiculo: " + v.getNombre());
+                System.out.println("Contaminación emitida: " + v.getContaminacion() + " g/km");
+                System.out.println("********************************");
+            }
+        } catch (IOException io) {
 
+        } finally {
+            ois.close();
+        }
 
     }
 
@@ -34,7 +43,7 @@ public class ListaVehiculos implements Utilizable {
 
     @Override
     public void pideYAnyade() {
-        //lista.add(JOptionPane.showInputDialog(null,"¿Vehículo a añadir?"));
+        /* lista.add(JOptionPane.showInputDialog(null,"¿Vehiculo a añadir?")))*/
 
 
     }
