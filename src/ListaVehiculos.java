@@ -9,7 +9,6 @@ public class ListaVehiculos implements Utilizable {
     public static final char DELIMITADOR = ';';
 
 
-
     @Override
     public String muestraTodos() {
         String salida = "";
