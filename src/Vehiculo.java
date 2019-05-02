@@ -15,6 +15,14 @@ public class Vehiculo implements Serializable {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setContaminacion(double contaminacion) {
+        this.contaminacion = contaminacion;
+    }
+
     public double getContaminacion() {
         return contaminacion;
     }
@@ -34,6 +42,6 @@ public class Vehiculo implements Serializable {
 
     @Override
     public String toString() {
-        return "Vehiculo: " + nombre + " - - - " + "contaminación emitida = " + contaminacion + "g/km.";
+        return "Vehículo: " + nombre.toUpperCase() + " contaminación emitida = " + contaminacion + " g/km.";
     }
 }
