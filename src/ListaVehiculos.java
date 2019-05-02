@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class ListaVehiculos implements Utilizable {
     List<Vehiculo> lista = new ArrayList<>();
+    public static final char DELIMITADOR = ';';
+
 
 
     @Override
@@ -21,31 +23,25 @@ public class ListaVehiculos implements Utilizable {
     @Override
     public void leeDeFichero(File fichero) {
 
+        String nombreVehiculo;
+        double contaminacionVehiculo;
+        int posicionDelimitador;
         try {
-
-            ObjectInputStream recuperandoFichero = new ObjectInputStream(new FileInputStream(fichero.getPath()));
-            Vehiculo[] vehiculoRecuperado = (Vehiculo[]) recuperandoFichero.readObject();
-
-            for (Vehiculo v : vehiculoRecuperado
-            ) {
-                System.out.println(v.toString());
+            List<String> lineasFichero = Files.readAllLines(fichero.toPath());
+            for (int i = 0; i < lineasFichero.size(); i++) {
+                posicionDelimitador = lineasFichero.get(i).indexOf(DELIMITADOR);
+                nombreVehiculo = lineasFichero.get(i).substring(0, posicionDelimitador);
+                contaminacionVehiculo = Double.parseDouble(lineasFichero.get(i).substring(posicionDelimitador + 1));
+                lista.add(new Vehiculo(nombreVehiculo, contaminacionVehiculo));
             }
-
-            recuperandoFichero.close();
-
-
-        } catch (IOException ioe) {
-
-            JOptionPane.showMessageDialog(null, "No se ha podido leer el fichero correctamente", "Error", JOptionPane.ERROR_MESSAGE);
-
-
-        } catch (ClassNotFoundException cnfe) {
-
-            JOptionPane.showMessageDialog(null, "Error en la clase", "Error", JOptionPane.ERROR_MESSAGE);
-
-
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, "Introduzca un número correcto (0.0)");
+        } catch (StringIndexOutOfBoundsException siobe) {
+            JOptionPane.showMessageDialog(null, "Error en la lectura del fichero, puede que el delimitador no sea el correcto (;)");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
 
     }
 
@@ -54,7 +50,7 @@ public class ListaVehiculos implements Utilizable {
         try (PrintWriter salida = new PrintWriter(fichero)) {
             for (Vehiculo v : lista
             ) {
-                salida.print(v.getNombre() + "," + v.getContaminacion() + "\n");
+                salida.print(v.getNombre() + DELIMITADOR + v.getContaminacion() + "\n");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
