@@ -36,13 +36,12 @@ public class ListaVehiculos implements Utilizable {
             }
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "Introduzca un número correcto (0.0)");
-        } catch (StringIndexOutOfBoundsException siobe) {
-            JOptionPane.showMessageDialog(null, "Error en la lectura del fichero, puede que el delimitador no sea el correcto (;)");
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (StringIndexOutOfBoundsException siobe) {
+            JOptionPane.showMessageDialog(null, "Error en la lectura del fichero, puede que el delimitador no sea el correcto (;)");
         }
-
     }
 
     @Override
